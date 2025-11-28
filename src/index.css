@@ -1,0 +1,175 @@
+/* 导入字体 */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* CSS 变量 - 深色主题（默认） */
+:root,
+[data-theme="dark"] {
+  /* 背景色 */
+  --bg-primary: #12121a;
+  --bg-secondary: #1a1a24;
+  
+  /* 表面色 */
+  --surface-elevated: #252532;
+  --surface-hover: #32324a;
+  --surface-muted: #3a3a50;
+  
+  /* 文字色 */
+  --text-primary: #ffffff;
+  --text-secondary: #b8b8c8;
+  --text-tertiary: #7878a0;
+  
+  /* 强调色 */
+  --accent: #ff6b6b;
+  --accent-secondary: #4ecdc4;
+  --accent-tertiary: #ffe66d;
+  
+  /* 阴影 */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+  /* 背景渐变 */
+  --bg-gradient: 
+    radial-gradient(ellipse at 20% 20%, rgba(255, 107, 107, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(78, 205, 196, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255, 230, 109, 0.03) 0%, transparent 60%);
+}
+
+/* CSS 变量 - 亮色主题 */
+[data-theme="light"] {
+  /* 背景色 */
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #ffffff;
+  
+  /* 表面色 */
+  --surface-elevated: #ffffff;
+  --surface-hover: #eef1f5;
+  --surface-muted: #e0e4ec;
+  
+  /* 文字色 */
+  --text-primary: #1a1a2e;
+  --text-secondary: #5a5a70;
+  --text-tertiary: #9090a0;
+  
+  /* 强调色 */
+  --accent: #e85555;
+  --accent-secondary: #3db9b0;
+  --accent-tertiary: #f0c040;
+  
+  /* 阴影 */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+  /* 背景渐变 */
+  --bg-gradient: 
+    radial-gradient(ellipse at 20% 20%, rgba(232, 85, 85, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(61, 185, 176, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(240, 192, 64, 0.04) 0%, transparent 60%);
+}
+
+/* 重置样式 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 基础样式 */
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 背景装饰 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-gradient);
+  pointer-events: none;
+  z-index: -1;
+  transition: background 0.3s ease;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* 按钮基础样式 */
+button {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* 输入框基础样式 */
+input {
+  font-family: inherit;
+}
+
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-elevated);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--surface-hover);
+}
+
+/* 选中文字样式 */
+::selection {
+  background: var(--accent);
+  color: white;
+}
+
+/* 亮色主题下的边框增强 */
+[data-theme="light"] .bpm-adjust-btn,
+[data-theme="light"] .time-sig-btn,
+[data-theme="light"] .sound-btn,
+[data-theme="light"] .preset-btn,
+[data-theme="light"] .toggle-btn,
+[data-theme="light"] .theme-toggle {
+  box-shadow: var(--shadow-sm), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
