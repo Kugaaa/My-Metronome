@@ -1,5 +1,210 @@
 /* 扁平化设计节拍器样式 */
 
+/* ========== 边缘灯带效果 ========== */
+.edge-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.05s ease-out;
+}
+
+.edge-glow.active {
+  opacity: 1;
+  animation: glow-pulse 0.15s ease-out forwards;
+}
+
+/* 重拍时更强烈的效果 */
+.edge-glow.active.accent {
+  animation: glow-pulse-accent 0.2s ease-out forwards;
+}
+
+@keyframes glow-pulse {
+  0% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes glow-pulse-accent {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 上边灯带 - 蓝绿色 */
+.edge-glow-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    to bottom,
+    rgba(78, 205, 196, 0.8) 0%,
+    rgba(78, 205, 196, 0.4) 30%,
+    rgba(78, 205, 196, 0) 100%
+  );
+  filter: blur(20px);
+}
+
+/* 下边灯带 - 红色 */
+.edge-glow-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    to top,
+    rgba(255, 107, 107, 0.8) 0%,
+    rgba(255, 107, 107, 0.4) 30%,
+    rgba(255, 107, 107, 0) 100%
+  );
+  filter: blur(20px);
+}
+
+/* 左边灯带 - 从蓝绿到红色渐变 */
+.edge-glow-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100px;
+  background: linear-gradient(
+    to bottom,
+    rgba(78, 205, 196, 0.8) 0%,
+    rgba(78, 205, 196, 0.6) 20%,
+    rgba(120, 180, 160, 0.5) 40%,
+    rgba(180, 140, 120, 0.5) 60%,
+    rgba(255, 107, 107, 0.6) 80%,
+    rgba(255, 107, 107, 0.8) 100%
+  );
+  -webkit-mask: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+  mask: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+  filter: blur(25px);
+}
+
+/* 右边灯带 - 从蓝绿到红色渐变 */
+.edge-glow-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100px;
+  background: linear-gradient(
+    to bottom,
+    rgba(78, 205, 196, 0.8) 0%,
+    rgba(78, 205, 196, 0.6) 20%,
+    rgba(120, 180, 160, 0.5) 40%,
+    rgba(180, 140, 120, 0.5) 60%,
+    rgba(255, 107, 107, 0.6) 80%,
+    rgba(255, 107, 107, 0.8) 100%
+  );
+  -webkit-mask: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+  mask: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+  filter: blur(25px);
+}
+
+/* 重拍时的增强效果 */
+.edge-glow.accent .edge-glow-top {
+  height: 150px;
+  filter: blur(25px);
+  background: linear-gradient(
+    to bottom,
+    rgba(78, 205, 196, 1) 0%,
+    rgba(78, 205, 196, 0.5) 40%,
+    rgba(78, 205, 196, 0) 100%
+  );
+}
+
+.edge-glow.accent .edge-glow-bottom {
+  height: 150px;
+  filter: blur(25px);
+  background: linear-gradient(
+    to top,
+    rgba(255, 107, 107, 1) 0%,
+    rgba(255, 107, 107, 0.5) 40%,
+    rgba(255, 107, 107, 0) 100%
+  );
+}
+
+.edge-glow.accent .edge-glow-left,
+.edge-glow.accent .edge-glow-right {
+  width: 130px;
+  filter: blur(30px);
+}
+
+/* 亮色主题下的灯带效果 */
+[data-theme="light"] .edge-glow-top {
+  background: linear-gradient(
+    to bottom,
+    rgba(61, 185, 176, 0.7) 0%,
+    rgba(61, 185, 176, 0.35) 30%,
+    rgba(61, 185, 176, 0) 100%
+  );
+}
+
+[data-theme="light"] .edge-glow-bottom {
+  background: linear-gradient(
+    to top,
+    rgba(232, 85, 85, 0.7) 0%,
+    rgba(232, 85, 85, 0.35) 30%,
+    rgba(232, 85, 85, 0) 100%
+  );
+}
+
+[data-theme="light"] .edge-glow-left {
+  background: linear-gradient(
+    to bottom,
+    rgba(61, 185, 176, 0.7) 0%,
+    rgba(61, 185, 176, 0.5) 20%,
+    rgba(100, 150, 140, 0.4) 40%,
+    rgba(160, 120, 100, 0.4) 60%,
+    rgba(232, 85, 85, 0.5) 80%,
+    rgba(232, 85, 85, 0.7) 100%
+  );
+}
+
+[data-theme="light"] .edge-glow-right {
+  background: linear-gradient(
+    to bottom,
+    rgba(61, 185, 176, 0.7) 0%,
+    rgba(61, 185, 176, 0.5) 20%,
+    rgba(100, 150, 140, 0.4) 40%,
+    rgba(160, 120, 100, 0.4) 60%,
+    rgba(232, 85, 85, 0.5) 80%,
+    rgba(232, 85, 85, 0.7) 100%
+  );
+}
+
+[data-theme="light"] .edge-glow.accent .edge-glow-top {
+  background: linear-gradient(
+    to bottom,
+    rgba(61, 185, 176, 0.9) 0%,
+    rgba(61, 185, 176, 0.45) 40%,
+    rgba(61, 185, 176, 0) 100%
+  );
+}
+
+[data-theme="light"] .edge-glow.accent .edge-glow-bottom {
+  background: linear-gradient(
+    to top,
+    rgba(232, 85, 85, 0.9) 0%,
+    rgba(232, 85, 85, 0.45) 40%,
+    rgba(232, 85, 85, 0) 100%
+  );
+}
+
 .metronome {
   width: 100%;
   max-width: 1000px;
@@ -478,19 +683,89 @@
   letter-spacing: 0.05em;
 }
 
-/* 动画 */
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
+/* 音量控制 */
+.volume-control {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--surface-muted);
 }
 
-.play-button.playing {
-  animation: pulse 0.5s ease-in-out infinite;
-  animation-duration: calc(60s / var(--bpm, 120));
+.volume-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.volume-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  min-width: 32px;
+  text-align: right;
+}
+
+.volume-slider-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.volume-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.volume-icon-max {
+  color: var(--text-secondary);
+}
+
+.volume-slider {
+  flex: 1;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--surface-elevated);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-secondary);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 6px rgba(78, 205, 196, 0.3);
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 3px 10px rgba(78, 205, 196, 0.4);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent-secondary);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.volume-slider::-moz-range-track {
+  height: 6px;
+  background: var(--surface-elevated);
+  border-radius: 3px;
 }
 
 /* ========== PC 端布局 (宽度 >= 768px) ========== */

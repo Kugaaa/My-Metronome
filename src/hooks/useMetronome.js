@@ -16,20 +16,6 @@ export const SOUND_TYPES = {
     duration: 0.1,
     gain: 1.0,
   },
-  wood: {
-    name: '木鱼',
-    frequency: 800,
-    type: 'triangle',
-    duration: 0.06,
-    gain: 1.2,
-  },
-  hihat: {
-    name: '踩镲',
-    frequency: 6000,
-    type: 'sawtooth',
-    duration: 0.04,
-    gain: 0.4,
-  },
   kick: {
     name: '底鼓',
     frequency: 100,
@@ -38,7 +24,7 @@ export const SOUND_TYPES = {
     gain: 1.5,
   },
   keyboard: {
-    name: '键盘',
+    name: '气泡',
     frequency: 523.25,
     type: 'sine',
     duration: 0.12,
@@ -46,7 +32,7 @@ export const SOUND_TYPES = {
     isKeyboard: true,
   },
   whistle: {
-    name: '鸣笛',
+    name: '玻璃',
     frequency: 1200,
     type: 'sine',
     duration: 0.15,
@@ -55,6 +41,8 @@ export const SOUND_TYPES = {
   },
 };
 
+const VOLUME_KEY = 'metronome-volume';
+
 export function useMetronome() {
   const [bpm, setBpm] = useState(120);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -62,6 +50,17 @@ export function useMetronome() {
   const [beatsPerMeasure, setBeatsPerMeasure] = useState(4);
   const [soundType, setSoundType] = useState('click');
   const [accentEnabled, setAccentEnabled] = useState(true);
+  // 音量 0-100，默认 60，从 localStorage 读取
+  const [volume, setVolumeState] = useState(() => {
+    const saved = localStorage.getItem(VOLUME_KEY);
+    if (saved !== null) {
+      const parsed = parseInt(saved, 10);
+      if (!isNaN(parsed) && parsed >= 0 && parsed <= 100) {
+        return parsed;
+      }
+    }
+    return 60;
+  });
   
   const audioContextRef = useRef(null);
   const masterGainRef = useRef(null); // 主音量节点，用于静音已调度的声音
@@ -82,6 +81,7 @@ export function useMetronome() {
   const soundTypeRef = useRef('click');
   const bpmRef = useRef(120);
   const beatsPerMeasureRef = useRef(4);
+  const volumeRef = useRef(60); // 音量 ref
 
   // 初始化音频上下文和主音量节点
   const initAudioContext = useCallback(() => {
@@ -134,7 +134,9 @@ export function useMetronome() {
       oscillator.frequency.setValueAtTime(baseFreq, time);
     }
     
-    const baseGain = sound.gain * (isAccent ? 1.0 : 0.7);
+    // 音量乘数：60 为基准（1.0），0 为静音，100 约为 1.67 倍
+    const volumeMultiplier = volumeRef.current / 60;
+    const baseGain = sound.gain * (isAccent ? 1.0 : 0.7) * volumeMultiplier;
     gainNode.gain.setValueAtTime(baseGain, time);
     gainNode.gain.exponentialRampToValueAtTime(0.001, time + sound.duration);
     
@@ -314,6 +316,18 @@ export function useMetronome() {
     restart();
   }, [accentEnabled, restart]);
 
+  // 当音量改变时更新 ref 和 localStorage
+  useEffect(() => {
+    volumeRef.current = volume;
+    localStorage.setItem(VOLUME_KEY, String(volume));
+  }, [volume]);
+
+  // 设置音量的包装函数
+  const setVolume = useCallback((newVolume) => {
+    const clampedVolume = Math.max(0, Math.min(100, newVolume));
+    setVolumeState(clampedVolume);
+  }, []);
+
   // 清理
   useEffect(() => {
     return () => {
@@ -335,6 +349,8 @@ export function useMetronome() {
     setSoundType,
     accentEnabled,
     setAccentEnabled,
+    volume,
+    setVolume,
     toggle,
     start,
     stop,
