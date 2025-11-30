@@ -50,6 +50,8 @@ export function useMetronome() {
   const [beatsPerMeasure, setBeatsPerMeasure] = useState(4);
   const [soundType, setSoundType] = useState('click');
   const [accentEnabled, setAccentEnabled] = useState(true);
+  const [flashEnabled, setFlashEnabled] = useState(true); // 节奏闪烁开关
+  const [shakeEnabled, setShakeEnabled] = useState(true); // 节奏晃动开关
   // 音量 0-100，默认 60，从 localStorage 读取
   const [volume, setVolumeState] = useState(() => {
     const saved = localStorage.getItem(VOLUME_KEY);
@@ -349,6 +351,10 @@ export function useMetronome() {
     setSoundType,
     accentEnabled,
     setAccentEnabled,
+    flashEnabled,
+    setFlashEnabled,
+    shakeEnabled,
+    setShakeEnabled,
     volume,
     setVolume,
     toggle,

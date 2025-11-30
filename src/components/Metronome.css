@@ -625,6 +625,55 @@
   color: var(--text-primary);
 }
 
+/* 功能开关容器 */
+.feature-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 功能开关行 */
+.feature-toggles-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ========== 节奏晃动动画 ========== */
+@keyframes shake {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  30% {
+    transform: translateY(-4px) rotate(-3deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes shake-strong {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-6px) rotate(-4deg) scale(1.03);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+/* 晃动类 */
+.shake {
+  animation: shake 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* 播放按钮的晃动效果更明显 */
+.play-button.shake {
+  animation: shake-strong 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
 /* 预设按钮 */
 .presets {
   width: 100%;
