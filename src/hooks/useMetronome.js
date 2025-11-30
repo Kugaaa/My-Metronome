@@ -42,6 +42,18 @@ export const SOUND_TYPES = {
 };
 
 const VOLUME_KEY = 'metronome-volume';
+const ACCENT_KEY = 'metronome-accent';
+const FLASH_KEY = 'metronome-flash';
+const SHAKE_KEY = 'metronome-shake';
+
+// 从 localStorage 读取布尔值
+const loadBooleanSetting = (key, defaultValue) => {
+  const saved = localStorage.getItem(key);
+  if (saved !== null) {
+    return saved === 'true';
+  }
+  return defaultValue;
+};
 
 export function useMetronome() {
   const [bpm, setBpm] = useState(120);
@@ -49,9 +61,9 @@ export function useMetronome() {
   const [currentBeat, setCurrentBeat] = useState(0);
   const [beatsPerMeasure, setBeatsPerMeasure] = useState(4);
   const [soundType, setSoundType] = useState('click');
-  const [accentEnabled, setAccentEnabled] = useState(true);
-  const [flashEnabled, setFlashEnabled] = useState(true); // 节奏闪烁开关
-  const [shakeEnabled, setShakeEnabled] = useState(true); // 节奏晃动开关
+  const [accentEnabled, setAccentEnabled] = useState(() => loadBooleanSetting(ACCENT_KEY, true));
+  const [flashEnabled, setFlashEnabled] = useState(() => loadBooleanSetting(FLASH_KEY, true));
+  const [shakeEnabled, setShakeEnabled] = useState(() => loadBooleanSetting(SHAKE_KEY, true));
   // 音量 0-100，默认 60，从 localStorage 读取
   const [volume, setVolumeState] = useState(() => {
     const saved = localStorage.getItem(VOLUME_KEY);
@@ -323,6 +335,19 @@ export function useMetronome() {
     volumeRef.current = volume;
     localStorage.setItem(VOLUME_KEY, String(volume));
   }, [volume]);
+
+  // 当功能开关改变时保存到 localStorage
+  useEffect(() => {
+    localStorage.setItem(ACCENT_KEY, String(accentEnabled));
+  }, [accentEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem(FLASH_KEY, String(flashEnabled));
+  }, [flashEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem(SHAKE_KEY, String(shakeEnabled));
+  }, [shakeEnabled]);
 
   // 设置音量的包装函数
   const setVolume = useCallback((newVolume) => {
